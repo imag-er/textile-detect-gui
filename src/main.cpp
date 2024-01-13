@@ -8,7 +8,8 @@ INT WINAPI wWinMain(
 	INT nCmdShow
 )
 {
-	App::Instance(hInstance);
+	auto inst = App::Instance(hInstance);
+	inst->makeComponents();
 
-	return App::Instance()->msgLoop();
+	return inst->msgLoop();
 }

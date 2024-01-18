@@ -3,7 +3,7 @@
 #define APPH 1
 
 #define WIN32_LEAN_AND_MEAN
-#define _UNICODE
+#define _UNICODE 
 // 尽量少使用 还是看情况分配
 constexpr auto STRINGLENGTH = 512;
 
@@ -30,6 +30,7 @@ public:
 	static std::wstring path;
 
 	MainWindow* mainwindow;
+	cv::VideoCapture* cap;
 
 private:
 	class Logger{

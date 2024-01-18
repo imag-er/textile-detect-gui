@@ -11,30 +11,47 @@
 #include <objidl.h>
 
 #include <gdiplus.h>
+
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
+
 #pragma comment(lib,"Gdiplus.lib")
 
 #include <tuple>
+
+class App;
 class MainWindow
 {
 public:
-	MainWindow(const std::string& );
-	operator bool() {return hWnd == 0;}
+	
+	MainWindow(const App*,const std::string&);
+
+	const App* app ;
+
+	// win32 window
 	HWND hWnd;
-	HWND hCapWnd;
 	const std::string& name;
+	operator bool() {return static_cast<bool>(hWnd);}
+	void createWin32Window();
 
-	struct Device
-	{
-		std::wstring device_name;
-		std::wstring device_version;
-	};
+	void onPaint(HDC);
 
+	// gdi+
 	ULONG_PTR gdiplus_token;
 	Gdiplus::GdiplusStartupInput gdiplus_startup_input;
 
-	void startStreaming();
 
+	// opencv 
+	
 
-
+	// check and ensure
+	bool checkGdiplus();
+	
+	bool checkWindow();
+	bool checkApp();
+	
+	enum WNDID{
+		TIMER_CAP
+	};
 };
 #endif

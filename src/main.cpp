@@ -9,6 +9,8 @@ INT WINAPI wWinMain(
 )
 {
 	auto inst = App::Instance(hInstance);
+
+
 	inst->makeComponents();
 
 	return inst->msgLoop();

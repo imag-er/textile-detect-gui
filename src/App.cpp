@@ -1,7 +1,7 @@
 #include "App.h"
 #include "logger.h"
-#include <gdiplus.h>
-#pragma comment (lib,"Gdiplus.lib")
+// #include <gdiplus.h>
+// #pragma comment (lib,"Gdiplus.lib")
 
 
 std::shared_ptr<App> App::instance = nullptr;
@@ -12,31 +12,29 @@ std::shared_ptr<App> App::Instance(HINSTANCE hInstance)
 {
 	if (!instance)
 	{
-		// 这里如果用工厂模式会调用constructor 会寄
+		// 这里如果用factory pattern会call constructor() 直接寄！
 		instance = std::shared_ptr<App>(new App(hInstance));
 	}
-
-
 	return instance;
 }
-
 App::App(HINSTANCE hInstance) :
 	logger()
 {
-// 在这里不能初始化app的component 否则会递归构造
+// 在这里不能init app的component,otherwise会recursive construct
 
-// 应用初始化
+// app init
 	this->hInstance = hInstance;
 
-// 获取exe文件地址
+// 获取exe地址
 	WCHAR buffer[512];
 	GetModuleFileNameW(0,buffer,512);	
 	this->path = buffer;
 	LOG(buffer);
 
 	LOG("Instance Constructed HANDLE:", hInstance);
-	// logfs = init_log();
 
+
+	cap = new cv::VideoCapture(0,cv::CAP_ANY);
 }
 App::Logger::Logger()
 {
@@ -56,7 +54,10 @@ App::Logger::Logger()
 }
 App::~App()
 {
-
+	delete mainwindow;
+	mainwindow = nullptr;
+	delete cap;
+	cap = nullptr;
 }
 App::Logger::~Logger()
 {
@@ -84,5 +85,5 @@ WPARAM App::msgLoop()
 
 VOID App::makeComponents()
 {
-	mainwindow = new MainWindow("纺织品检测");
+	mainwindow = new MainWindow(this,"纺织品检测");
 }

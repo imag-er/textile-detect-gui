@@ -38,9 +38,9 @@ inline const std::string strconv(const std::wstring &str)
 			<< format(x, ##__VA_ARGS__) \
 			<< std::endl;               \
 	}
-
 // 从路径获取文件名
 inline const std::wstring shorten_path(const std::string &&path)
+
 {
 	size_t pos = path.find_last_of('\\');
 	return strconv(

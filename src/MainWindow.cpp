@@ -3,7 +3,7 @@
 #include "MainWindow.h"
 
 #include "logger.h"
-
+#include <opencv2/imgproc.hpp>
 LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT msgCode, WPARAM wParam, LPARAM lParam);
 
 MainWindow::MainWindow(const App *app_, const std::string &name_)
@@ -18,7 +18,7 @@ MainWindow::MainWindow(const App *app_, const std::string &name_)
 	checkWindow();
 
 	ShowWindow(hWnd, SW_SHOWNORMAL);
-	MoveWindow(hWnd, 100, 100, 800, 600, TRUE);
+	MoveWindow(hWnd, 100, 100, 1080, 720, TRUE);
 	UpdateWindow(hWnd);
 }
 
@@ -42,7 +42,7 @@ LRESULT CALLBACK MainWindowProc(
 		// 注意这里CreateWindow还没返回，hwnd没有值
 
 		// 绘制计时器
-		constexpr auto cap_fps = 20;
+		constexpr auto cap_fps = 20; // 帧率
 		constexpr auto eclapse = 1000 / cap_fps;
 		SetTimer(
 			hWnd,
@@ -53,6 +53,9 @@ LRESULT CALLBACK MainWindowProc(
 				window->onPaint(GetDC(window->hWnd));
 				return;
 			});
+
+		// CreateWindowW(L"button",L"拍照",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,
+		// 	)
 		break;
 	}
 	case WM_PAINT:
@@ -76,6 +79,9 @@ void MainWindow::onPaint(HDC hdc)
 	Gdiplus::Graphics graphics(hdc);
 	cv::Mat m;
 	bool res = inst->cap->read(m);
+	cv::resize(m,m,{512,360},0,0,cv::InterpolationFlags::INTER_LINEAR);
+	cv::flip(m,m,1);
+
 
 	// 24 bits per pixel
 	Gdiplus::Bitmap image(m.cols, m.rows, m.step, PixelFormat24bppRGB, m.data);
@@ -83,7 +89,6 @@ void MainWindow::onPaint(HDC hdc)
 }
 
 bool MainWindow::checkGdiplus()
-
 {
 	Gdiplus::Status st = Gdiplus::GdiplusStartup(&gdiplus_token, &gdiplus_startup_input, NULL);
 	if (st != Gdiplus::Status::Ok)

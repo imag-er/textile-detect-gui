@@ -10,11 +10,13 @@ constexpr auto STRINGLENGTH = 512;
 
 
 #include <windows.h>
+#include <tchar.h>
+#include <strsafe.h>
 #include <memory>
 #include <iostream>
 #include <fstream>
 #include "MainWindow.h"
-
+#include "CameraManager.h"
 
 class App
 {
@@ -28,9 +30,8 @@ public:
 	static HINSTANCE hInstance;
 	// static std::wstring app_path;
 	static std::wstring path;
-
+	static CameraManager cm;
 	MainWindow* mainwindow;
-	cv::VideoCapture* cap;
 
 private:
 	class Logger{

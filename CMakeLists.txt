@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 
-project(texile-detect-gui)
+project(textile-detect-gui)
 
 
 set(CMAKE_CXX_STANDARD 17)
@@ -15,9 +15,11 @@ include_directories(./src/)
 add_executable(${PROJECT_NAME} ${SRCS})
 
 
-
-target_link_libraries(${PROJECT_NAME} vfw32)
 target_link_libraries(${PROJECT_NAME} Gdiplus)
+target_link_libraries(${PROJECT_NAME} ole32)
+target_link_libraries(${PROJECT_NAME} strmiids)
+target_link_libraries(${PROJECT_NAME} oleaut32)
+target_link_libraries(${PROJECT_NAME} Comctl32)
 
 
 FIND_PACKAGE(OpenCV REQUIRED)

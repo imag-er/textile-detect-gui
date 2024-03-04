@@ -35,6 +35,7 @@ inline const std::string strconv(const std::wstring &str)
 			<< __FUNCTION__             \
 			<< ')';                     \
 		std::wcout                      \
+			<< '\t'                     \
 			<< format(x, ##__VA_ARGS__) \
 			<< std::endl;               \
 	}
